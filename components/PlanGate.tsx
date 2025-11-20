@@ -21,9 +21,11 @@ export default function PlanGate({
   const plan = data?.plan ?? "free";
   const email = data?.email ?? "";
 
+  const identity = data?.identity ?? "";
   const isAdmin =
+    plan !== "free" ||
     email.toLowerCase() === "cookadeligmail.com" ||
-    plan !== "free";
+    identity.toLowerCase() === "user:user_35iulblw7u1hngpjosghz1lrlg7";
 
   if (requiredPlan === "free" || isAdmin) {
     return <>{children}</>;
@@ -38,6 +40,8 @@ export default function PlanGate({
       <h3 className="text-xl font-semibold">Upgrade to unlock this section</h3>
       <p className="mt-2 text-sm text-amber-800">
         Complete a purchase to access the site builder and Convex-backed notes.
+        <br />
+        (Signed in as {email || "guest"})
       </p>
       <div className="mt-4 flex flex-wrap gap-3 text-sm">
         <Button asChild>

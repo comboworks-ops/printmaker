@@ -30,6 +30,7 @@ export const getCurrentPlan = query({
       updatedAt: record.updatedAt,
       source: record.source,
       email: record.email,
+      identity: record.identity,
     };
   },
 });
