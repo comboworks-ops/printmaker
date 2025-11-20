@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useQuery, useMutation } from "convex/react";
+import { useUser } from "@clerk/nextjs";
 import { api } from "@/convex/_generated/api";
 import SiteCard from "./SiteCard";
 import {
@@ -27,7 +28,12 @@ const slugify = (value: string) =>
     .slice(0, 48);
 
 export default function SiteBuilderPanel() {
-  const sites = useQuery(api.sites.listSites, {});
+  const { isSignedIn } = useUser();
+  const sites =
+    useQuery(
+      isSignedIn ? api.sites.listSites : undefined,
+      isSignedIn ? {} : undefined,
+    ) ?? [];
   const createSite = useMutation(api.sites.createSite);
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
@@ -48,6 +54,9 @@ export default function SiteBuilderPanel() {
     setSaving(true);
     setError(null);
     try {
+      if (!isSignedIn) {
+        throw new Error("You must be signed in to create sites.");
+      }
       await createSite({
         name: name.trim(),
         slug: readySlug,
@@ -147,13 +156,13 @@ export default function SiteBuilderPanel() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {sites?.length === 0 ? (
+          {(!sites || sites.length === 0) ? (
             <div className="rounded-2xl border border-dashed border-zinc-200 bg-zinc-50 p-6 text-center text-sm text-muted-foreground">
               No sites yet. Use the form above to create one.
             </div>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2">
-              {sites?.map((site) => (
+              {sites.map((site) => (
                 <SiteCard key={site._id} site={site} />
               ))}
             </div>
