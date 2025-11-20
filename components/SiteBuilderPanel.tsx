@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { useQuery, useMutation } from "convex/react";
-import { useUser } from "@clerk/nextjs";
 import { api } from "@/convex/_generated/api";
 import SiteCard from "./SiteCard";
 import {
@@ -28,9 +27,7 @@ const slugify = (value: string) =>
     .slice(0, 48);
 
 export default function SiteBuilderPanel() {
-  const { isSignedIn } = useUser();
-  const sites =
-    useQuery(api.sites.listSites, {}, { skip: !isSignedIn }) ?? [];
+  const sites = useQuery(api.sites.listSites, {});
   const createSite = useMutation(api.sites.createSite);
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
@@ -51,9 +48,6 @@ export default function SiteBuilderPanel() {
     setSaving(true);
     setError(null);
     try {
-      if (!isSignedIn) {
-        throw new Error("You must be signed in to create sites.");
-      }
       await createSite({
         name: name.trim(),
         slug: readySlug,
