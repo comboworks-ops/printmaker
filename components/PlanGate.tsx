@@ -19,8 +19,13 @@ export default function PlanGate({
 }: PlanGateProps) {
   const data = useQuery(api.userPlans.getCurrentPlan, {});
   const plan = data?.plan ?? "free";
+  const email = data?.email ?? "";
 
-  if (requiredPlan === "free" || plan !== "free") {
+  const isAdmin =
+    email.toLowerCase() === "comboworks@gmail.com" ||
+    plan !== "free";
+
+  if (requiredPlan === "free" || isAdmin) {
     return <>{children}</>;
   }
 
