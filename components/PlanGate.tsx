@@ -22,7 +22,7 @@ export default function PlanGate({
   const email = data?.email ?? "";
 
   const isAdmin =
-    email.toLowerCase() === "comboworks@gmail.com" ||
+    email.toLowerCase() === "cookadeligmail.com" ||
     plan !== "free";
 
   if (requiredPlan === "free" || isAdmin) {
