@@ -30,10 +30,7 @@ const slugify = (value: string) =>
 export default function SiteBuilderPanel() {
   const { isSignedIn } = useUser();
   const sites =
-    useQuery(
-      isSignedIn ? api.sites.listSites : undefined,
-      isSignedIn ? {} : undefined,
-    ) ?? [];
+    useQuery(api.sites.listSites, {}, { skip: !isSignedIn }) ?? [];
   const createSite = useMutation(api.sites.createSite);
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
