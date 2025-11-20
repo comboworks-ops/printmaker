@@ -102,12 +102,7 @@ export default function RootLayout({
   }
 
   return (
-    <ClerkProvider
-      publishableKey={clerkPublishableKey}
-      afterSignOutUrl="https://accounts.cookadeli.com"
-      signInUrl={clerkPublishableKey ? undefined : "https://accounts.cookadeli.com/sign-in"}
-      signUpUrl={clerkPublishableKey ? undefined : "https://accounts.cookadeli.com/sign-up"}
-    >
+    <ClerkProvider publishableKey={clerkPublishableKey}>
       <ConvexClientProvider>
         <AppChrome isClerkConfigured>{children}</AppChrome>
       </ConvexClientProvider>
