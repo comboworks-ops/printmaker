@@ -6,4 +6,5 @@ const nextConfig: NextConfig = {
   },
 };
 
+// Vercel: force clean build (cache buster: 1)
 export default nextConfig;
