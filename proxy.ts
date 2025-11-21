@@ -1,13 +1,11 @@
-import { hasClerkPublishableKey, hasClerkSecretKey } from "@/lib/clerkConfig";
+import { hasClerkPublishableKey } from "@/lib/clerkConfig";
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export const runtime = "edge";
 
-const hasClerkKeys = hasClerkPublishableKey() && hasClerkSecretKey();
-
-const proxy = hasClerkKeys
+const proxy = hasClerkPublishableKey()
   ? clerkMiddleware()
   : (_req: NextRequest) => {
       void _req;
